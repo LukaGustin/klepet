@@ -27,6 +27,10 @@ a {
   margin-right: 10px;
 }
 
+#sporocila div img {
+  margin-left: 10px;
+}
+
 #seznam-kanalov, #seznam-uporabnikov {
   float: right;
   width: 100%;
