@@ -23,8 +23,8 @@ function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
   var sistemskoSporocilo;
-  if (sporocilo.startsWith("http://") || sporocilo.startsWith("https://")) {
-    if(sporocilo.endsWith(".jpg") || sporocilo.endsWith(".png") || sporocilo.endsWith(".gif")) {
+  if ((sporocilo.indexOf("http://") > -1) || (sporocilo.indexOf("https://") > -1)) {
+    if((sporocilo.indexOf(".jpg")>-1)|| (sporocilo.endsWith(".png")>-1) || (sporocilo.endsWith(".gif")>-1)) {
       klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
       $('#sporocila').append(divElementEnostavniTekst(sporocilo));
       var stil = "width:200px; margin-left:20px;"
