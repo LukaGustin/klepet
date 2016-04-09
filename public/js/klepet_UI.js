@@ -1,7 +1,15 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
   var jeSlika = sporocilo.indexOf('<img') > -1;
+  var jeZasebno = sporocilo.indexOf('zasebno') > -1;
+  if (jeZasebno) {
+    var sporocilo2 = sporocilo;
+    res = sporocilo.split(' ')
+    var sli = res[0] + " " + res[1] + " " + "<img src='" + res[2] + "' />";
+    return $('<div style="font-weight: bold"></div>').html(sli); 
+  }
   if(jeSlika) {
+    //alert("Slika");
     //sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);  
   }
@@ -23,7 +31,12 @@ function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
   var sistemskoSporocilo;
-  if ((sporocilo.indexOf("http://") > -1) || (sporocilo.indexOf("https://") > -1)) {
+  if (sporocilo.charAt(0) == '/') {
+    sistemskoSporocilo = klepetApp.procesirajUkaz(sporocilo);
+    if (sistemskoSporocilo) {
+      $('#sporocila').append(divElementHtmlTekst(sistemskoSporocilo));
+    } 
+    } else if ((sporocilo.indexOf("http://") > -1) || (sporocilo.indexOf("https://") > -1)) {
     if((sporocilo.indexOf(".jpg")>-1)|| (sporocilo.endsWith(".png")>-1) || (sporocilo.endsWith(".gif")>-1)) {
       klepetApp.posljiSporocilo(trenutniKanal, sporocilo);
       $('#sporocila').append(divElementEnostavniTekst(sporocilo));
@@ -34,11 +47,6 @@ function procesirajVnosUporabnika(klepetApp, socket) {
       klepetApp.posljiSporocilo(trenutniKanal, sporocilo2);
       $('#sporocila').append(divElementHtmlTekst(sporocilo2));
       $('#sporocila').scrollTop($('#sporocila').prop('scrollHeight'));
-    }
-  } else if (sporocilo.charAt(0) == '/') {
-    sistemskoSporocilo = klepetApp.procesirajUkaz(sporocilo);
-    if (sistemskoSporocilo) {
-      $('#sporocila').append(divElementHtmlTekst(sistemskoSporocilo));
     }
   } else {
     sporocilo = filtirirajVulgarneBesede(sporocilo);

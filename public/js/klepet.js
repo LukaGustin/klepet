@@ -38,7 +38,15 @@ Klepet.prototype.procesirajUkaz = function(ukaz) {
       var parametri = besedilo.split('\"');
       if (parametri) {
         this.socket.emit('sporocilo', { vzdevek: parametri[1], besedilo: parametri[3] });
-        sporocilo = '(zasebno za ' + parametri[1] + '): ' + parametri[3];
+        //alert(parametri[3]);
+        if(parametri[3].indexOf("http") > -1) {
+          if((parametri[3].indexOf("jpg") > -1) || (parametri[3].indexOf("png") > -1) || (parametri[3].indexOf("gif") > -1)) {
+            var sporocilo2 = "<img src='" + parametri[3] + "' />"
+            sporocilo = '(zasebno za ' + parametri[1] + '): ' + sporocilo2;  
+          }
+        } else {
+          sporocilo = '(zasebno za ' + parametri[1] + '): ' + parametri[3];
+        }
       } else {
         sporocilo = 'Neznan ukaz';
       }
