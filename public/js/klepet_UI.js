@@ -1,13 +1,19 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
   var jeVideo = sporocilo.indexOf('youtube') > -1;
+  var jeZasebno = sporocilo.indexOf('zasebno') > -1;
   if (jeVideo) {
     var video = sporocilo;
     var posiljatelj = sporocilo;
     var res1 = posiljatelj.split(" ", 1);
     var res = video.split("=");
     var sporocilo2;
-    if(!(res1[0].indexOf('youtube') > -1)) {
+    var zasebnivideo= sporocilo;
+    if (jeZasebno) {
+      var res2 = zasebnivideo.split(' ');
+      sporocilo = res2[0] + " " + res2[1] + "<iframe src=" + '"' + "https://www.youtube.com/embed/" + res[1] + '"' + "allowfullscreen" + "></iframe>";
+      return $('<div style="font-weight: bold"></div>').html(sporocilo);   
+    } else if (!(res1[0].indexOf('youtube') > -1)) {
       sporocilo2 = res1[0] + "<iframe src=" + '"' + "https://www.youtube.com/embed/" + res[1] + '"' + "allowfullscreen" + "></iframe>";
     } else {
       sporocilo2 = "<iframe src=" + '"' + "https://www.youtube.com/embed/" + res[1] + '"' + "allowfullscreen" + "></iframe>";
