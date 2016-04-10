@@ -30,6 +30,7 @@ Klepet.prototype.procesirajUkaz = function(ukaz) {
     case 'vzdevek':
       besede.shift();
       var vzdevek = besede.join(' ');
+      //alert(vzdevek);
       this.socket.emit('vzdevekSpremembaZahteva', vzdevek);
       break;
     case 'zasebno':
@@ -59,6 +60,13 @@ Klepet.prototype.procesirajUkaz = function(ukaz) {
         sporocilo = 'Neznan ukaz';
       }
       }
+      break;
+    case 'dregljaj':
+      besede.shift();
+      var prejemnik = besede.join(' ');
+      //alert(vzdevek); 
+      this.socket.emit('dregljaj',  {vzdevek: prejemnik});
+      
       break;
     default:
       sporocilo = 'Neznan ukaz.';
