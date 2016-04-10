@@ -1,9 +1,7 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
-  /*if(sporocilo.besedilo.indexOf('neznan') > -1) {
-    divElementHtmlTekst(sporocilo);
-  }*/
-  if(sporocilo.indexOf("Neznan") > -1) {
+
+  if(sporocilo.indexOf("Neznan") > -1 || sporocilo.indexOf("Dregljaj") > -1) {
     $('#sporocila').append(divElementHtmlTekst(sporocilo));
   } else if (jeSmesko) {
     sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
@@ -85,10 +83,10 @@ $(document).ready(function() {
   });
   
   socket.on('dregljaj', function(dregljaj){
-    alert("der");
+    //alert("der");
     $('#vsebina').jrumble();
     $('#vsebina').trigger('startRumble');
-    //setTimeout(stop(), 1500);
+    setTimeout(stop(), 1500);
     //$('#vsebina').trigger('stopRumble');
   });
   
@@ -136,6 +134,18 @@ $(document).ready(function() {
   
   
 });
+
+/*jQuery(document).ready(function() {
+  var KlepetApp= new Klepet(socket);
+  socket.on('dregljaj', function(dregljaj){
+    alert("der");
+    jQuery('#vsebina').jrumble();
+    jQuery('#vsebina').trigger('startRumble');
+    //setTimeout(stop(), 1500);
+    //$('#vsebina').trigger('stopRumble');
+  });
+  
+});*/
 
 function dodajSmeske(vhodnoBesedilo) {
   var preslikovalnaTabela = {
