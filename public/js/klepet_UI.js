@@ -1,10 +1,11 @@
 function divElementEnostavniTekst(sporocilo) {
   var jeSmesko = sporocilo.indexOf('http://sandbox.lavbic.net/teaching/OIS/gradivo/') > -1;
+//
   var jeSlika = sporocilo.indexOf('<img') > -1;
   var jeZasebno = sporocilo.indexOf('zasebno') > -1;
-  if (jeZasebno) {
+  if (jeZasebno && jeSlika) {
     var sporocilo2 = sporocilo;
-    res = sporocilo.split(' ')
+    res = sporocilo2.split(' ')
     var sli = res[0] + " " + res[1] + " " + "<img src='" + res[2] + "' />";
     return $('<div style="font-weight: bold"></div>').html(sli); 
   }
@@ -13,12 +14,35 @@ function divElementEnostavniTekst(sporocilo) {
     //sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);  
   }
-  if (jeSmesko) {
+  
+//=======
+  var jeVideo = sporocilo.indexOf('youtube') > -1;
+  var jeZasebno = sporocilo.indexOf('zasebno') > -1;
+  if (jeVideo) {
+    var video = sporocilo;
+    var posiljatelj = sporocilo;
+    var res1 = posiljatelj.split(" ", 1);
+    var res = video.split("=");
+    var sporocilo4;
+    var zasebnivideo= sporocilo;
+    if (jeZasebno) {
+      var res2 = zasebnivideo.split(' ');
+      sporocilo = res2[0] + " " + res2[1] + "<iframe src=" + '"' + "https://www.youtube.com/embed/" + res[1] + '"' + "allowfullscreen" + "></iframe>";
+      return $('<div style="font-weight: bold"></div>').html(sporocilo);   
+    } else if (!(res1[0].indexOf('youtube') > -1)) {
+      sporocilo4 = res1[0] + "<iframe src=" + '"' + "https://www.youtube.com/embed/" + res[1] + '"' + "allowfullscreen" + "></iframe>";
+    } else {
+      sporocilo4 = "<iframe src=" + '"' + "https://www.youtube.com/embed/" + res[1] + '"' + "allowfullscreen" + "></iframe>";
+    }
+    return $('<div style="font-weight: bold"></div>').html(sporocilo4);
+  } else if (jeSmesko) {
+//>>>>>>> youtube
     sporocilo = sporocilo.replace(/\</g, '&lt;').replace(/\>/g, '&gt;').replace('&lt;img', '<img').replace('png\' /&gt;', 'png\' />');
     return $('<div style="font-weight: bold"></div>').html(sporocilo);
   } else {
     return $('<div style="font-weight: bold;"></div>').text(sporocilo);
   }
+  
 }
 
 function divElementHtmlTekst(sporocilo) {
@@ -31,6 +55,11 @@ function procesirajVnosUporabnika(klepetApp, socket) {
   var sporocilo = $('#poslji-sporocilo').val();
   sporocilo = dodajSmeske(sporocilo);
   var sistemskoSporocilo;
+//<<<<<<< HEAD
+//=======
+  var jeVideo = sporocilo.indexOf('youtube') > -1;
+ 
+//>>>>>>> youtube
   if (sporocilo.charAt(0) == '/') {
     sistemskoSporocilo = klepetApp.procesirajUkaz(sporocilo);
     if (sistemskoSporocilo) {
